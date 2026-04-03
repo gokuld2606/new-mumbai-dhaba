@@ -1,123 +1,128 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { menuData } from '@/data/menu';
-import CategoryTabs from './components/CategoryTabs';
-import CategoryPanel from './components/CategoryPanel';
-import SearchBar from './components/SearchBar';
-import SearchResults from './components/SearchResults';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import BottomNav from './components/BottomNav';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-type NavSection = 'home' | 'menu' | 'search' | 'info';
-
-export default function HomePage() {
-  const [activeId, setActiveId] = useState(menuData[0].id);
-  const [filter, setFilter] = useState<'all' | 'veg' | 'nonveg'>('all');
-  const [search, setSearch] = useState('');
-  const [navActive, setNavActive] = useState<NavSection>('home');
-
-  const headerRef = useRef<HTMLDivElement>(null);
-  const menuRef  = useRef<HTMLDivElement>(null);
-  const searchRef = useRef<HTMLDivElement>(null);
-  const infoRef  = useRef<HTMLDivElement>(null);
-
-  const visibleCategories = menuData.filter(
-    (c) => filter === 'all' || c.type === filter || c.type === 'both'
-  );
+export default function LandingPage() {
+  const router = useRouter();
+  const [tableNo, setTableNo] = useState<string | null>(null);
 
   useEffect(() => {
-    if (visibleCategories.length > 0) {
-      const stillVisible = visibleCategories.find((c) => c.id === activeId);
-      if (!stillVisible) setActiveId(visibleCategories[0].id);
-    }
-  }, [filter]);
+    const params = new URLSearchParams(window.location.search);
+    const t = params.get('table');
+    if (t) setTableNo(t);
+  }, []);
 
-  const activeCategory = menuData.find((c) => c.id === activeId);
-
-  const handleNavSelect = (id: string) => {
-    setNavActive(id as NavSection);
-    if (id === 'search') {
-      searchRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setTimeout(() => {
-        const input = searchRef.current?.querySelector('input');
-        input?.focus();
-      }, 400);
-    } else if (id === 'home') {
-      headerRef.current?.scrollIntoView({ behavior: 'smooth' });
-    } else if (id === 'menu') {
-      menuRef.current?.scrollIntoView({ behavior: 'smooth' });
-    } else if (id === 'info') {
-      infoRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+  const goToMenu = () => {
+    const query = tableNo ? `?table=${tableNo}` : '';
+    router.push(`/menu${query}`);
   };
 
+  const tickerItems = [
+    '🚭 No Alcohol & No Smoking',
+    '⏱️ Prep Time: 20 Minutes',
+    '📦 Parcel: +₹10 Extra',
+    '💰 No Discount Policy',
+    '🍛 Fresh & Authentic Taste',
+  ];
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <div ref={headerRef}>
-        <Header />
+    <div className="min-h-screen flex flex-col hero-bg hero-pattern relative overflow-hidden">
+
+      {/* Top rainbow stripe */}
+      <div className="h-1.5 w-full flex-shrink-0"
+        style={{ background: 'linear-gradient(90deg, #F5871F, #FFCD00, #C8102E, #F5871F)' }} />
+
+      {/* Table badge */}
+      <div className="flex justify-end px-5 pt-4 animate-in stagger-1">
+        {tableNo ? (
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold"
+            style={{ background: 'rgba(245,135,31,0.18)', border: '1.5px solid rgba(245,135,31,0.45)', color: '#F5871F' }}>
+            <span>🪑</span>
+            <span>Table {tableNo}</span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full text-xs"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,245,228,0.4)' }}>
+            <span>📷</span>
+            <span>Scan QR for table</span>
+          </div>
+        )}
       </div>
 
-      {/* Search bar */}
-      <div ref={searchRef} className="max-w-5xl mx-auto w-full px-4 py-5">
-        <SearchBar value={search} onChange={(v) => { setSearch(v); if (v) setNavActive('search'); }} />
+      {/* Center hero */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+
+        {/* Chef hat */}
+        <div className="text-7xl mb-4 animate-in stagger-1" style={{ filter: 'drop-shadow(0 4px 24px rgba(245,135,31,0.4))' }}>
+          👨‍🍳
+        </div>
+
+        {/* Name */}
+        <h1 className="font-display font-black animate-in stagger-2"
+          style={{
+            fontSize: 'clamp(2.8rem, 12vw, 5rem)',
+            lineHeight: 1.05,
+            color: '#F5871F',
+            textShadow: '0 0 40px rgba(245,135,31,0.35), 2px 3px 0 rgba(0,0,0,0.3)'
+          }}>
+          New Mumbai
+        </h1>
+        <h2 className="font-display font-bold animate-in stagger-3"
+          style={{
+            fontSize: 'clamp(1.6rem, 7vw, 3rem)',
+            color: '#FFCD00',
+            letterSpacing: '0.12em',
+            textShadow: '1px 2px 0 rgba(0,0,0,0.25)'
+          }}>
+          Family Dhaba
+        </h2>
+
+        <p className="font-accent text-lg mt-2 animate-in stagger-3"
+          style={{ color: 'rgba(255,245,228,0.55)' }}>
+          Taste the Heart of Mumbai
+        </p>
+
+        {/* Address */}
+        <div className="flex items-center gap-2 mt-4 text-sm animate-in stagger-4"
+          style={{ color: 'rgba(255,245,228,0.5)' }}>
+          <span>📍</span>
+          <span>TPT Road, Taduku R.S.</span>
+        </div>
+
+        {/* Menu CTA */}
+        <button
+          onClick={goToMenu}
+          className="mt-10 px-10 py-4 rounded-2xl font-black text-lg tracking-wide animate-in stagger-4 transition-all active:scale-95"
+          style={{
+            background: 'linear-gradient(135deg, #F5871F, #C8102E)',
+            color: 'white',
+            boxShadow: '0 6px 30px rgba(245,135,31,0.5), 0 2px 8px rgba(0,0,0,0.2)',
+            letterSpacing: '0.05em'
+          }}>
+          🍽️ &nbsp;View Menu
+        </button>
+
+        {tableNo && (
+          <p className="mt-3 text-xs animate-in stagger-4" style={{ color: 'rgba(255,245,228,0.35)' }}>
+            Ordering for Table {tableNo}
+          </p>
+        )}
       </div>
 
-      {search.trim() ? (
-        <main className="max-w-5xl mx-auto w-full px-4 pb-12">
-          <SearchResults query={search} />
-        </main>
-      ) : (
-        <>
-          <div ref={menuRef}>
-            <CategoryTabs
-              categories={menuData}
-              activeId={activeId}
-              filter={filter}
-              onSelectCategory={(id) => { setActiveId(id); setNavActive('menu'); }}
-              onFilterChange={setFilter}
-            />
-          </div>
-
-          <main className="max-w-5xl mx-auto w-full px-4 py-8 flex-1">
-            {activeCategory ? (
-              <CategoryPanel key={activeCategory.id} category={activeCategory} />
-            ) : (
-              <p className="text-center py-16" style={{ color: '#999' }}>
-                No categories match the current filter.
-              </p>
-            )}
-          </main>
-        </>
-      )}
-
-      {/* Info section */}
-      <div ref={infoRef} className="max-w-5xl mx-auto w-full px-4 py-8">
-        <div className="rounded-2xl p-6 text-center" style={{ background: '#502314', color: 'rgba(255,245,228,0.85)' }}>
-          <p className="font-display text-2xl font-bold mb-2" style={{ color: '#F5871F' }}>📍 Find Us</p>
-          <p className="text-sm mb-4">TPT Road, Taduku R.S.</p>
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            {[
-              ['📦', 'Parcel', '+₹10 extra'],
-              ['⏱️', 'Prep Time', '20 minutes'],
-              ['🚭', 'Policy', 'No Alcohol / Smoking'],
-              ['💰', 'Discount', 'No Discount'],
-            ].map(([icon, label, val]) => (
-              <div key={label} className="rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                <div className="text-xl mb-1">{icon}</div>
-                <div className="font-bold text-xs" style={{ color: '#FFCD00' }}>{label}</div>
-                <div className="text-xs mt-0.5 opacity-70">{val}</div>
-              </div>
-            ))}
-          </div>
+      {/* Scrolling ticker at bottom */}
+      <div className="flex-shrink-0 overflow-hidden py-3"
+        style={{ background: 'rgba(0,0,0,0.35)', borderTop: '1px solid rgba(245,135,31,0.2)' }}>
+        <div className="ticker-track text-sm font-semibold" style={{ color: 'rgba(255,245,228,0.7)' }}>
+          {[...tickerItems, ...tickerItems].map((item, i) => (
+            <span key={i} className="mx-8">{item}</span>
+          ))}
         </div>
       </div>
 
-      <Footer />
-
-      {/* Floating bottom nav — mobile only */}
-      <BottomNav active={navActive} onSelect={handleNavSelect} />
+      {/* Bottom stripe */}
+      <div className="h-1.5 flex-shrink-0"
+        style={{ background: 'linear-gradient(90deg, #F5871F, #FFCD00, #C8102E, #F5871F)' }} />
     </div>
   );
 }

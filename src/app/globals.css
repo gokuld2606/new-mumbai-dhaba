@@ -15,7 +15,6 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -23,13 +22,22 @@ body {
   color: var(--bk-dark);
   font-family: 'Nunito', sans-serif;
   overflow-x: hidden;
-  padding-bottom: 90px;
 }
 
-@media (min-width: 768px) {
-  body { padding-bottom: 0; }
+@keyframes ticker {
+  0%   { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
+}
+.ticker-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker 20s linear infinite;
+  gap: 0;
 }
 
+.hero-bg {
+  background: linear-gradient(160deg, #1C0A00 0%, #502314 55%, #7B3F1E 100%);
+}
 .hero-pattern {
   background-image:
     radial-gradient(circle at 15% 50%, rgba(245,135,31,0.22) 0%, transparent 50%),
@@ -41,9 +49,8 @@ body {
   transition: transform 0.22s ease, box-shadow 0.22s ease;
   background: var(--bk-white);
   border: 1.5px solid rgba(245,135,31,0.12);
-  border-radius: 14px;
+  border-radius: 16px;
 }
-
 .menu-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 32px rgba(245,135,31,0.14);
@@ -55,15 +62,22 @@ body {
   color: white !important;
   box-shadow: 0 4px 16px rgba(245,135,31,0.4);
 }
+.sticky-tabs {
+  background: rgba(255,245,228,0.97);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(245,135,31,0.15);
+}
 
-.price-badge {
+.price-tag {
   background: linear-gradient(135deg, #F5871F, #D96B0A);
   color: white;
   font-weight: 800;
-  border-radius: 20px;
-  padding: 3px 12px;
-  font-size: 0.82rem;
-  font-family: 'Nunito', sans-serif;
+  border-radius: 10px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  min-width: 56px;
+  text-align: center;
 }
 
 .spl-badge {
@@ -72,62 +86,46 @@ body {
   font-weight: 900;
   border-radius: 5px;
   padding: 1px 7px;
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.divider-ornament {
+.add-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F5871F, #D96B0A);
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 1.5rem 0 1rem;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(245,135,31,0.4);
+  line-height: 1;
 }
+.add-btn:hover  { transform: scale(1.12); box-shadow: 0 4px 14px rgba(245,135,31,0.55); }
+.add-btn:active { transform: scale(0.93); }
 
-.divider-ornament::before,
-.divider-ornament::after {
-  content: '';
-  flex: 1;
-  height: 1.5px;
-  background: linear-gradient(to right, transparent, rgba(245,135,31,0.35), transparent);
-}
-
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.animate-in { animation: fadeSlideUp 0.42s ease both; }
-.stagger-1 { animation-delay: 0.05s; }
-.stagger-2 { animation-delay: 0.10s; }
-.stagger-3 { animation-delay: 0.15s; }
-.stagger-4 { animation-delay: 0.20s; }
-
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: var(--bk-cream); }
-::-webkit-scrollbar-thumb { background: #F5871F; border-radius: 4px; }
-
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* ===== FLOATING BOTTOM NAV ===== */
 .bottom-nav {
   position: fixed;
   bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 40px);
-  max-width: 400px;
+  max-width: 380px;
   background: #1C0A00;
   border-radius: 28px;
-  padding: 12px 20px;
+  padding: 10px 20px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: 100;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.45);
 }
-
 .bottom-nav-item {
   display: flex;
   flex-direction: column;
@@ -136,33 +134,64 @@ body {
   padding: 6px 12px;
   border-radius: 18px;
   transition: all 0.2s ease;
-  color: rgba(255,255,255,0.4);
-  font-size: 1.4rem;
+  color: rgba(255,255,255,0.38);
+  font-size: 1.3rem;
   position: relative;
 }
-
 .bottom-nav-item.active {
   color: #F5871F;
-  background: rgba(245,135,31,0.12);
+  background: rgba(245,135,31,0.13);
 }
-
-.bottom-nav-item .nav-dot {
-  width: 4px;
-  height: 4px;
-  background: #F5871F;
+.cart-badge {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  background: #C8102E;
+  color: white;
+  font-size: 0.58rem;
+  font-weight: 900;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  margin-top: 3px;
-  opacity: 0;
-  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #1C0A00;
 }
 
-.bottom-nav-item.active .nav-dot {
-  opacity: 1;
+.divider-ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 1.5rem 0 1rem;
+}
+.divider-ornament::before,
+.divider-ornament::after {
+  content: '';
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(to right, transparent, rgba(245,135,31,0.3), transparent);
 }
 
-.sticky-tabs {
-  background: rgba(255,245,228,0.97);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(245,135,31,0.15);
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+.animate-in { animation: fadeSlideUp 0.42s ease both; }
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.22s; }
+
+@keyframes popIn {
+  0%  { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.12); }
+  100%{ transform: scale(1);   opacity: 1; }
+}
+.pop-in { animation: popIn 0.28s ease both; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bk-cream); }
+::-webkit-scrollbar-thumb { background: #F5871F; border-radius: 4px; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

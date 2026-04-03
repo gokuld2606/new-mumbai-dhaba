@@ -1,37 +1,36 @@
 'use client';
 
-type NavItem = {
-  icon: string;
-  label: string;
-  id: string;
-};
-
-const navItems: NavItem[] = [
-  { icon: '🏠', label: 'Home',   id: 'home'   },
-  { icon: '🍽️', label: 'Menu',   id: 'menu'   },
-  { icon: '🔍', label: 'Search', id: 'search' },
-  { icon: 'ℹ️', label: 'Info',   id: 'info'   },
-];
-
 type Props = {
-  active: string;
-  onSelect: (id: string) => void;
+  active: 'menu' | 'cart';
+  totalItems: number;
+  onHome: () => void;
+  onCart: () => void;
+  onReset: () => void;
 };
 
-export default function BottomNav({ active, onSelect }: Props) {
+export default function BottomNav({ active, totalItems, onHome, onCart, onReset }: Props) {
   return (
-    <nav className="bottom-nav md:hidden">
-      {navItems.map((item) => (
-        <button
-          key={item.id}
-          onClick={() => onSelect(item.id)}
-          className={`bottom-nav-item ${active === item.id ? 'active' : ''}`}
-          aria-label={item.label}
-        >
-          <span className="text-xl leading-none">{item.icon}</span>
-          <span className="nav-dot" />
-        </button>
-      ))}
+    <nav className="bottom-nav">
+      {/* Home */}
+      <button className="bottom-nav-item" onClick={onHome} aria-label="Home">
+        <span className="text-xl">🏠</span>
+      </button>
+
+      {/* Reset filters */}
+      <button className="bottom-nav-item" onClick={onReset} aria-label="Reset filters">
+        <span className="text-xl">🔄</span>
+      </button>
+
+      {/* Cart */}
+      <button
+        className={`bottom-nav-item ${active === 'cart' ? 'active' : ''}`}
+        onClick={onCart}
+        aria-label="Cart">
+        <span className="text-xl">🛒</span>
+        {totalItems > 0 && (
+          <span className="cart-badge">{totalItems > 9 ? '9+' : totalItems}</span>
+        )}
+      </button>
     </nav>
   );
 }
