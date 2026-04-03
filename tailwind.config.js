@@ -9,30 +9,17 @@ module.exports = {
     extend: {
       fontFamily: {
         display: ['Playfair Display', 'serif'],
-        body: ['Lato', 'sans-serif'],
+        body: ['Nunito', 'sans-serif'],
         accent: ['Dancing Script', 'cursive'],
       },
       colors: {
-        saffron: '#FF6B00',
-        crimson: '#C0392B',
-        gold: '#D4A017',
-        cream: '#FFF8F0',
-        charcoal: '#1A1A1A',
-        cardBg: '#FFFDF9',
-      },
-      animation: {
-        'fade-in': 'fadeIn 0.6s ease forwards',
-        'slide-up': 'slideUp 0.5s ease forwards',
-      },
-      keyframes: {
-        fadeIn: {
-          from: { opacity: '0' },
-          to: { opacity: '1' },
-        },
-        slideUp: {
-          from: { opacity: '0', transform: 'translateY(20px)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
-        },
+        bkOrange: '#F5871F',
+        bkBrown: '#502314',
+        bkRed: '#C8102E',
+        bkCream: '#FFF5E4',
+        bkYellow: '#FFCD00',
+        bkDark: '#1C0A00',
+        bkWhite: '#FFFDF9',
       },
     },
   },

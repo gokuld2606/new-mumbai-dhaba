@@ -1,97 +1,82 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400;700&family=Dancing+Script:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800;900&family=Dancing+Script:wght@600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --saffron: #FF6B00;
-  --crimson: #C0392B;
-  --gold: #D4A017;
-  --cream: #FFF8F0;
-  --charcoal: #1A1A1A;
+  --bk-orange: #F5871F;
+  --bk-brown: #502314;
+  --bk-red: #C8102E;
+  --bk-cream: #FFF5E4;
+  --bk-yellow: #FFCD00;
+  --bk-dark: #1C0A00;
+  --bk-white: #FFFDF9;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--cream);
-  color: var(--charcoal);
-  font-family: 'Lato', sans-serif;
+  background-color: var(--bk-cream);
+  color: var(--bk-dark);
+  font-family: 'Nunito', sans-serif;
   overflow-x: hidden;
+  padding-bottom: 90px;
 }
 
-/* Hero pattern overlay */
+@media (min-width: 768px) {
+  body { padding-bottom: 0; }
+}
+
 .hero-pattern {
-  background-image: 
-    radial-gradient(circle at 20% 50%, rgba(255, 107, 0, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(192, 57, 43, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 60% 80%, rgba(212, 160, 23, 0.1) 0%, transparent 40%);
+  background-image:
+    radial-gradient(circle at 15% 50%, rgba(245,135,31,0.22) 0%, transparent 50%),
+    radial-gradient(circle at 85% 20%, rgba(200,16,46,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 90%, rgba(255,205,0,0.1) 0%, transparent 40%);
 }
 
-/* Subtle noise texture */
-.noise-texture::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
-  pointer-events: none;
-}
-
-/* Card hover effect */
 .menu-card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  background: var(--bk-white);
+  border: 1.5px solid rgba(245,135,31,0.12);
+  border-radius: 14px;
 }
 
 .menu-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(255, 107, 0, 0.12);
+  box-shadow: 0 10px 32px rgba(245,135,31,0.14);
+  border-color: rgba(245,135,31,0.4);
 }
 
-/* Category tab active */
 .tab-active {
-  background: linear-gradient(135deg, var(--saffron), var(--crimson));
-  color: white;
-  box-shadow: 0 4px 20px rgba(255, 107, 0, 0.35);
+  background: linear-gradient(135deg, #F5871F, #C8102E) !important;
+  color: white !important;
+  box-shadow: 0 4px 16px rgba(245,135,31,0.4);
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--cream); }
-::-webkit-scrollbar-thumb { background: var(--saffron); border-radius: 3px; }
-
-/* Price badge */
 .price-badge {
-  background: linear-gradient(135deg, #FF6B00, #FF8C42);
+  background: linear-gradient(135deg, #F5871F, #D96B0A);
   color: white;
-  font-weight: 700;
+  font-weight: 800;
   border-radius: 20px;
-  padding: 2px 10px;
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
+  padding: 3px 12px;
+  font-size: 0.82rem;
+  font-family: 'Nunito', sans-serif;
 }
 
-/* SPL badge */
 .spl-badge {
-  background: linear-gradient(135deg, #D4A017, #F0C040);
-  color: #1A1A1A;
-  font-weight: 700;
-  border-radius: 4px;
-  padding: 1px 6px;
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
+  background: linear-gradient(135deg, #FFCD00, #FFD93D);
+  color: #502314;
+  font-weight: 900;
+  border-radius: 5px;
+  padding: 1px 7px;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-/* Section divider */
 .divider-ornament {
   display: flex;
   align-items: center;
@@ -103,21 +88,81 @@ body {
 .divider-ornament::after {
   content: '';
   flex: 1;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(212, 160, 23, 0.4), transparent);
+  height: 1.5px;
+  background: linear-gradient(to right, transparent, rgba(245,135,31,0.35), transparent);
 }
 
-/* Animate in */
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.animate-in {
-  animation: fadeSlideUp 0.45s ease both;
-}
-
+.animate-in { animation: fadeSlideUp 0.42s ease both; }
 .stagger-1 { animation-delay: 0.05s; }
-.stagger-2 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.10s; }
 .stagger-3 { animation-delay: 0.15s; }
-.stagger-4 { animation-delay: 0.2s; }
+.stagger-4 { animation-delay: 0.20s; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bk-cream); }
+::-webkit-scrollbar-thumb { background: #F5871F; border-radius: 4px; }
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ===== FLOATING BOTTOM NAV ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 400px;
+  background: #1C0A00;
+  border-radius: 28px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 18px;
+  transition: all 0.2s ease;
+  color: rgba(255,255,255,0.4);
+  font-size: 1.4rem;
+  position: relative;
+}
+
+.bottom-nav-item.active {
+  color: #F5871F;
+  background: rgba(245,135,31,0.12);
+}
+
+.bottom-nav-item .nav-dot {
+  width: 4px;
+  height: 4px;
+  background: #F5871F;
+  border-radius: 50%;
+  margin-top: 3px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.bottom-nav-item.active .nav-dot {
+  opacity: 1;
+}
+
+.sticky-tabs {
+  background: rgba(255,245,228,0.97);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(245,135,31,0.15);
+}
